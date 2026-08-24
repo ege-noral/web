@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00D4C8" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#00D4C8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- Glow -->
+  <circle cx="60" cy="60" r="56" fill="url(#glow)"/>
+  <!-- Brain outline -->
+  <path d="M38 76 C26 76 18 68 18 58 C18 51 22 45 28 42 C26 37 27 31 32 28 C37 25 43 26 46 30 C50 26 55 24 60 24 C65 24 70 26 74 30 C77 26 83 25 88 28 C93 31 94 37 92 42 C98 45 102 51 102 58 C102 68 94 76 82 76 L38 76 Z" fill="none" stroke="#00D4C8" stroke-width="2.5" stroke-linejoin="round"/>
+  <!-- Brain division line -->
+  <path d="M60 28 L60 72" stroke="rgba(0,212,200,0.4)" stroke-width="1.5" stroke-dasharray="3 3"/>
+  <!-- Circuit lines horizontal -->
+  <line x1="36" y1="50" x2="84" y2="50" stroke="#00D4C8" stroke-width="1.8"/>
+  <!-- Circuit lines vertical branches -->
+  <line x1="46" y1="50" x2="38" y2="38" stroke="#00D4C8" stroke-width="1.5"/>
+  <line x1="60" y1="50" x2="60" y2="36" stroke="#00D4C8" stroke-width="1.5"/>
+  <line x1="74" y1="50" x2="82" y2="38" stroke="#00D4C8" stroke-width="1.5"/>
+  <!-- Lower branches -->
+  <line x1="46" y1="50" x2="42" y2="64" stroke="#00D4C8" stroke-width="1.5"/>
+  <line x1="74" y1="50" x2="78" y2="64" stroke="#00D4C8" stroke-width="1.5"/>
+  <line x1="60" y1="50" x2="60" y2="64" stroke="#00D4C8" stroke-width="1.5"/>
+  <!-- Nodes — glowing dots -->
+  <circle cx="36" cy="50" r="5" fill="#00D4C8" opacity="0.9"/>
+  <circle cx="46" cy="50" r="5" fill="#0B1F3A" stroke="#00D4C8" stroke-width="2"/>
+  <circle cx="60" cy="50" r="6" fill="#00D4C8"/>
+  <circle cx="74" cy="50" r="5" fill="#0B1F3A" stroke="#00D4C8" stroke-width="2"/>
+  <circle cx="84" cy="50" r="5" fill="#00D4C8" opacity="0.9"/>
+  <!-- Top nodes -->
+  <circle cx="38" cy="38" r="4" fill="#00D4C8" opacity="0.7"/>
+  <circle cx="60" cy="36" r="4.5" fill="#00D4C8"/>
+  <circle cx="82" cy="38" r="4" fill="#00D4C8" opacity="0.7"/>
+  <!-- Bottom nodes -->
+  <circle cx="42" cy="64" r="3.5" fill="#00D4C8" opacity="0.6"/>
+  <circle cx="60" cy="64" r="3.5" fill="#00D4C8" opacity="0.7"/>
+  <circle cx="78" cy="64" r="3.5" fill="#00D4C8" opacity="0.6"/>
+</svg>

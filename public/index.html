@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NöraL — Neuroscience Community</title>
+  <link rel="icon" href="images/logo.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================================
+       BRAND PALETTE — change only these 4 to retheme everything
+    ============================================================ */
+    :root {
+      --c1: #0B1F3A;
+      --c2: #00CFC9;
+      --c3: #FFFFFF;
+      --c4: #F4F7FA;
+
+      --text:       var(--c1);
+      --text-muted: #5E7491;
+      --accent:     var(--c2);
+      --border:     #DDE3EB;
+      --nav-h:      60px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      color: var(--text);
+      background: var(--c3);
+      font-size: 15px;
+      line-height: 1.65;
+    }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    /* Language */
+    body.lang-en .tr { display: none !important; }
+    body.lang-tr .en { display: none !important; }
+    body:not(.lang-tr) .tr { display: none !important; }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      background: var(--c3);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      z-index: 100;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Sora', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--c1);
+    }
+    .nav-logo img {
+      width: 32px; height: 32px;
+      border-radius: 6px;
+      object-fit: cover;
+    }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .nav-btn {
+      padding: 6px 14px;
+      font-size: .85rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      border-radius: 6px;
+      border: 1px solid transparent;
+      background: none;
+      transition: color .15s, background .15s, border-color .15s;
+    }
+    .nav-btn:hover, .nav-btn.active {
+      color: var(--c1);
+      background: var(--c4);
+      border-color: var(--border);
+    }
+    .lang-btn {
+      margin-left: 10px;
+      padding: 5px 13px;
+      font-size: .8rem;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: background .15s, color .15s;
+    }
+    .lang-btn:hover { background: var(--c1); color: var(--c3); border-color: var(--c1); }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      margin-left: 12px;
+    }
+    .hamburger span {
+      display: block;
+      width: 22px; height: 2px;
+      background: var(--c1);
+      border-radius: 2px;
+    }
+
+    /* LAYOUT */
+    .page-wrap { padding-top: var(--nav-h); }
+    section { padding: 80px 40px; }
+    .container { max-width: 960px; margin: 0 auto; }
+    .section-label {
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-family: 'Sora', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--c1);
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .section-sub {
+      color: var(--text-muted);
+      max-width: 560px;
+      margin-bottom: 48px;
+      font-size: .95rem;
+    }
+    .divider { height: 1px; background: var(--border); max-width: 960px; margin: 0 auto; }
+
+    /* HERO */
+    #home {
+      background: var(--c1);
+      padding: 100px 40px 90px;
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+    }
+    .hero-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 60px;
+      align-items: center;
+    }
+    .hero-tag {
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+    .hero-title {
+      font-family: 'Sora', sans-serif;
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: var(--c3);
+      line-height: 1.15;
+      margin-bottom: 22px;
+    }
+    .hero-title span { color: var(--accent); }
+    .hero-sub {
+      color: rgba(255,255,255,.6);
+      font-size: .95rem;
+      line-height: 1.8;
+      margin-bottom: 36px;
+      max-width: 480px;
+    }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 22px;
+      font-size: .875rem;
+      font-weight: 600;
+      border-radius: 7px;
+      transition: background .15s, color .15s, border-color .15s;
+      border: 1px solid transparent;
+      cursor: pointer;
+    }
+    .btn-primary { background: var(--accent); color: var(--c1); }
+    .btn-primary:hover { background: #00b3ae; }
+    .btn-outline {
+      background: transparent;
+      border-color: rgba(255,255,255,.25);
+      color: rgba(255,255,255,.8);
+    }
+    .btn-outline:hover { border-color: rgba(255,255,255,.5); color: var(--c3); }
+    .hero-image-box {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      aspect-ratio: 1;
+      overflow: hidden;
+    }
+    .hero-image-box img { width: 80%; opacity: .85; filter: brightness(1.2); }
+
+    /* PEOPLE */
+    #people { background: var(--c3); }
+    .people-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .person-card {
+      padding: 32px 28px;
+      background: var(--c3);
+      border-right: 1px solid var(--border);
+    }
+    .person-card:last-child { border-right: none; }
+    .person-avatar {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: var(--c4);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Sora', sans-serif;
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--c1);
+      margin-bottom: 18px;
+    }
+    .person-name {
+      font-family: 'Sora', sans-serif;
+      font-size: .95rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .person-role {
+      font-size: .72rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 6px;
+    }
+    .person-inst {
+      font-size: .8rem;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+    .person-bio {
+      font-size: .82rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .person-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
+    .tag {
+      font-size: .7rem;
+      padding: 3px 9px;
+      border-radius: 4px;
+      background: var(--c4);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+    .person-links { display: flex; gap: 8px; }
+    .person-link {
+      font-size: .75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 4px 10px;
+      transition: color .15s, border-color .15s;
+    }
+    .person-link:hover { color: var(--c1); border-color: var(--c1); }
+
+    /* STUDIES */
+    #studies { background: var(--c4); }
+    .studies-list {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .study-item {
+      background: var(--c3);
+      padding: 28px 32px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 20px;
+      align-items: start;
+      border-bottom: 1px solid var(--border);
+    }
+    .study-item:last-child { border-bottom: none; }
+    .study-type {
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .study-title {
+      font-family: 'Sora', sans-serif;
+      font-size: .95rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .study-desc { font-size: .83rem; color: var(--text-muted); line-height: 1.65; }
+    .study-meta { text-align: right; white-space: nowrap; }
+    .badge {
+      display: inline-block;
+      font-size: .67rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    .badge-active   { background: #D1FAE5; color: #065F46; }
+    .badge-planned  { background: #FEF3C7; color: #92400E; }
+    .badge-completed{ background: #DBEAFE; color: #1E40AF; }
+
+    /* NEWS */
+    #news { background: var(--c3); }
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .news-item {
+      background: var(--c3);
+      padding: 28px;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .news-item:nth-child(2n) { border-right: none; }
+    .news-item:nth-last-child(-n+2) { border-bottom: none; }
+    .news-date { font-size: .75rem; color: var(--text-muted); margin-bottom: 6px; }
+    .news-category {
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .news-title {
+      font-family: 'Sora', sans-serif;
+      font-size: .92rem;
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+    .news-text { font-size: .82rem; color: var(--text-muted); line-height: 1.65; }
+
+    /* CONTACT */
+    #contact { background: var(--c4); }
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 60px;
+      align-items: start;
+    }
+    .contact-info-block h3 {
+      font-family: 'Sora', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .contact-info-block p {
+      font-size: .88rem;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+      line-height: 1.7;
+    }
+    .contact-detail { margin-bottom: 16px; }
+    .contact-detail-label {
+      font-size: .7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 3px;
+    }
+    .contact-detail-val { font-size: .88rem; font-weight: 500; }
+    .contact-detail-val a { color: var(--c1); }
+    .contact-detail-val a:hover { color: var(--accent); }
+    .socials { display: flex; gap: 8px; margin-top: 24px; }
+    .social-chip {
+      font-size: .78rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text-muted);
+      background: var(--c3);
+      transition: color .15s, border-color .15s;
+    }
+    .social-chip:hover { color: var(--c1); border-color: var(--c1); }
+    .form-box {
+      background: var(--c3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 36px 32px;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-group { margin-bottom: 14px; }
+    .form-group label {
+      display: block;
+      font-size: .72rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 9px 13px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: .875rem;
+      color: var(--c1);
+      background: var(--c3);
+      outline: none;
+      transition: border-color .15s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--accent); }
+    .form-group textarea { min-height: 120px; resize: vertical; }
+    .checkbox-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .checkbox-row input[type="checkbox"] { margin-top: 3px; flex-shrink: 0; }
+    .checkbox-row label { font-size: .82rem; color: var(--text-muted); line-height: 1.6; }
+    .checkbox-row a { color: var(--accent); }
+    .btn-submit {
+      width: 100%;
+      padding: 11px;
+      background: var(--c1);
+      color: var(--c3);
+      border: none;
+      border-radius: 7px;
+      font-family: inherit;
+      font-size: .9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .btn-submit:hover { background: #162f54; }
+    .success-msg {
+      display: none;
+      background: #D1FAE5;
+      color: #065F46;
+      border-radius: 7px;
+      padding: 12px 16px;
+      font-size: .85rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    .success-msg.show { display: block; }
+
+    /* FOOTER */
+    footer {
+      background: var(--c1);
+      padding: 32px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Sora', sans-serif;
+      font-weight: 700;
+      font-size: .95rem;
+      color: rgba(255,255,255,.8);
+    }
+    .footer-left img { width: 28px; height: 28px; border-radius: 5px; object-fit: cover; }
+    .footer-right { font-size: .8rem; color: rgba(255,255,255,.35); }
+
+    /* RESPONSIVE */
+    @media (max-width: 860px) {
+      nav { padding: 0 24px; }
+      .nav-right .nav-btn { display: none; }
+      .hamburger { display: flex; }
+
+      section { padding: 60px 24px; }
+      #home { padding: 80px 24px 70px; }
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-image-box { display: none; }
+      .hero-title { font-size: 2rem; }
+      .stats-row { gap: 28px; }
+
+      .people-grid { grid-template-columns: 1fr; }
+      .person-card { border-right: none; border-bottom: 1px solid var(--border); }
+      .person-card:last-child { border-bottom: none; }
+
+      .news-grid { grid-template-columns: 1fr; }
+      .news-item { border-right: none; }
+      .news-item:nth-last-child(-n+2) { border-bottom: 1px solid var(--border); }
+      .news-item:last-child { border-bottom: none; }
+
+      .contact-layout { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 10px; text-align: center; }
+    }
+    @media (max-width: 600px) {
+      .study-item { grid-template-columns: 1fr; }
+      .study-meta { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="main-nav">
+  <a href="#home" class="nav-logo">
+    <img src="images/logo.jpg" alt="NöraL">
+    NöraL
+  </a>
+  <div class="nav-right" id="nav-right">
+    <a href="#home" class="nav-btn"><span class="en">Home</span><span class="tr">Ana Sayfa</span></a>
+    <a href="#people" class="nav-btn"><span class="en">People</span><span class="tr">Ekip</span></a>
+    <a href="#studies" class="nav-btn"><span class="en">Studies</span><span class="tr">&#199;al&#305;&#351;malar</span></a>
+    <a href="#news" class="nav-btn"><span class="en">News</span><span class="tr">Haberler</span></a>
+    <a href="#contact" class="nav-btn"><span class="en">Contact</span><span class="tr">&#304;leti&#351;im</span></a>
+    <button id="lang-toggle" class="lang-btn">TR</button>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- HOME -->
+  <section id="home">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-tag">
+          <span class="en">Open Neuroscience Community</span>
+          <span class="tr">A&#231;&#305;k N&#246;robilim Toplulu&#287;u</span>
+        </div>
+        <h1 class="hero-title">
+          <span class="en">Exploring the <span>Brain</span>,<br>Building the Future</span>
+          <span class="tr">Beyni <span>ke&#351;fediyoruz</span>,<br>gelece&#287;i in&#351;a ediyoruz</span>
+        </h1>
+        <p class="hero-sub">
+          <span class="en">Lorem ipsum dolor sit amet, consectetur adipiscing elit. We bring together researchers, students and practitioners passionate about neuroscience and biomedical signal processing.</span>
+          <span class="tr">Lorem ipsum dolor sit amet, consectetur adipiscing elit. N&#246;robilim ve biyomedikal sinyal i&#351;leme alan&#305;nda ara&#351;t&#305;rmac&#305;lar&#305;, &#246;&#287;rencileri ve uygulay&#305;c&#305;lar&#305; bir araya getiriyoruz.</span>
+        </p>
+        <div class="hero-actions">
+          <a href="#people" class="btn btn-primary">
+            <span class="en">Meet the Team</span>
+            <span class="tr">Ekibi Tan&#305;</span>
+          </a>
+          <a href="#studies" class="btn btn-outline">
+            <span class="en">Our Studies</span>
+            <span class="tr">&#199;al&#305;&#351;malar&#305;m&#305;z</span>
+          </a>
+        </div>
+      </div>
+      <div class="hero-image-box">
+        <img src="images/logo.jpg" alt="NöraL">
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- PEOPLE -->
+  <section id="people">
+    <div class="container">
+      <div class="section-label"><span class="en">People</span><span class="tr">Ekip</span></div>
+      <h2 class="section-title"><span class="en">The Team</span><span class="tr">Ekibimiz</span></h2>
+      <p class="section-sub">
+        <span class="en">Researchers and academics working at the intersection of neuroscience, biomedical engineering, and signal processing.</span>
+        <span class="tr">N&#246;robilim, biyomedikal m&#252;hendisli&#287;i ve sinyal i&#351;leme kesiminde &#231;al&#305;&#351;an ara&#351;t&#305;rmac&#305;lar ve akademisyenler.</span>
+      </p>
+      <div class="people-grid">
+
+        <div class="person-card">
+          <div class="person-avatar">ME</div>
+          <div class="person-name">Prof. Dr. Mehmet Engin</div>
+          <div class="person-role"><span class="en">Professor Emeritus</span><span class="tr">Emekli Profesör</span></div>
+          <div class="person-inst">
+            <span class="en">Ege University &mdash; Dept. of Electrical &amp; Electronics Engineering, Izmir</span>
+            <span class="tr">Ege &#220;niversitesi &mdash; Elektrik-Elektronik M&#252;hendisli&#287;i, &#304;zmir</span>
+          </div>
+          <p class="person-bio">
+            <span class="en">Spent 25 years at Ege University's Faculty of Engineering. Research in biomedical signal processing, ECG systems, wavelet-based watermarking, and optical imaging for medical diagnostics.</span>
+            <span class="tr">Ege &#220;niversitesi M&#252;hendislik Fak&#252;ltesi'nde 25 y&#305;l g&#246;rev yapt&#305;. Biyomedikal sinyal i&#351;leme, EKG sistemleri ve t&#305;bbi tan&#305; i&#231;in optik g&#246;r&#252;nt&#252;leme.</span>
+          </p>
+          <div class="person-tags">
+            <span class="tag">Biomedical Signal Processing</span>
+            <span class="tag">ECG</span>
+            <span class="tag">Optical Imaging</span>
+          </div>
+          <div class="person-links">
+            <a href="https://www.linkedin.com/in/mehmet-engin-76873a20/" target="_blank" class="person-link">LinkedIn</a>
+          </div>
+        </div>
+
+        <div class="person-card">
+          <div class="person-avatar">EE</div>
+          <div class="person-name">Erkan Engin</div>
+          <div class="person-role"><span class="en">Assistant Professor</span><span class="tr">Dr. &#214;&#287;retim &#220;yesi</span></div>
+          <div class="person-inst">
+            <span class="en">Ege University &mdash; Dept. of Electrical &amp; Electronics Engineering, Izmir</span>
+            <span class="tr">Ege &#220;niversitesi &mdash; Elektrik-Elektronik M&#252;hendisli&#287;i, &#304;zmir</span>
+          </div>
+          <p class="person-bio">
+            <span class="en">Active researcher since 2001. 44 publications with 746+ citations on ResearchGate. Specializes in wavelet transforms, biomedical signal and image processing.</span>
+            <span class="tr">2001'den bu yana aktif ara&#351;t&#305;rmac&#305;. 44 yay&#305;n ve 746+ atıf. Dalgac&#305;k d&#246;n&#252;&#351;&#252;m&#252;, biyomedikal sinyal ve g&#246;r&#252;nt&#252; i&#351;leme uzmanlı&#287;&#305;.</span>
+          </p>
+          <div class="person-tags">
+            <span class="tag">Wavelet Transform</span>
+            <span class="tag">Image Processing</span>
+            <span class="tag">Signal Processing</span>
+          </div>
+          <div class="person-links">
+            <a href="https://www.researchgate.net/profile/Erkan-Engin" target="_blank" class="person-link">ResearchGate</a>
+          </div>
+        </div>
+
+        <div class="person-card">
+          <div class="person-avatar">BA</div>
+          <div class="person-name">Dr. Burcu Acar Demirci</div>
+          <div class="person-role"><span class="en">Research Assistant</span><span class="tr">Ara&#351;. Gör. Dr.</span></div>
+          <div class="person-inst">
+            <span class="en">Manisa Celal Bayar University &mdash; Dept. of Electrical &amp; Electronics Engineering</span>
+            <span class="tr">Manisa Celal Bayar &#220;niversitesi &mdash; Elektrik-Elektronik M&#252;hendisli&#287;i</span>
+          </div>
+          <p class="person-bio">
+            <span class="en">PhD in Electrical &amp; Electronics Engineering. 15 publications indexed in Web of Science and Scopus, 355+ citations, H-index 4. Research in signal processing and artificial intelligence.</span>
+            <span class="tr">Elektrik-Elektronik M&#252;hendisli&#287;i doktoras&#305;. 15 yay&#305;n (WoS, Scopus), 355+ atıf, H-indeks 4. Sinyal i&#351;leme ve yapay zeka.</span>
+          </p>
+          <div class="person-tags">
+            <span class="tag">Signal Processing</span>
+            <span class="tag">Artificial Intelligence</span>
+            <span class="tag">EEG</span>
+          </div>
+          <div class="person-links">
+            <a href="https://avesis.mcbu.edu.tr/burcu.acar" target="_blank" class="person-link">Avesis</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- STUDIES -->
+  <section id="studies">
+    <div class="container">
+      <div class="section-label"><span class="en">Research</span><span class="tr">Ara&#351;t&#305;rma</span></div>
+      <h2 class="section-title"><span class="en">Studies</span><span class="tr">&#199;al&#305;&#351;malar</span></h2>
+      <p class="section-sub">
+        <span class="en">Active projects and academic publications in neuroscience and biomedical engineering.</span>
+        <span class="tr">N&#246;robilim ve biyomedikal m&#252;hendisli&#287;inde devam eden projeler ve akademik yay&#305;nlar.</span>
+      </p>
+      <div class="studies-list">
+
+        <div class="study-item">
+          <div>
+            <div class="study-type">BCI</div>
+            <div class="study-title">
+              <span class="en">EEG Motor Imagery Classification</span>
+              <span class="tr">EEG Motor G&#246;r&#252;nt&#252;leme S&#305;n&#305;fland&#305;rmas&#305;</span>
+            </div>
+            <div class="study-desc">
+              <span class="en">Lorem ipsum dolor sit amet. Deep learning classification of EEG motor imagery signals for brain-computer interface applications.</span>
+              <span class="tr">Lorem ipsum dolor sit amet. Beyin-bilgisayar aray&#252;z&#252; uygulamalar&#305; i&#231;in EEG sinyallerinin derin &#246;&#287;renme ile s&#305;n&#305;fland&#305;r&#305;lmas&#305;.</span>
+            </div>
+          </div>
+          <div class="study-meta">
+            <span class="badge badge-active"><span class="en">Active</span><span class="tr">Devam Ediyor</span></span>
+          </div>
+        </div>
+
+        <div class="study-item">
+          <div>
+            <div class="study-type">Cognitive Neuroscience</div>
+            <div class="study-title">
+              <span class="en">Cognitive Load &amp; Learning Efficiency</span>
+              <span class="tr">Kognitif Y&#252;k ve &#214;&#287;renme Verimlili&#287;i</span>
+            </div>
+            <div class="study-desc">
+              <span class="en">Lorem ipsum dolor sit amet. Measuring cognitive load using EEG and eye-tracking during learning tasks in controlled environments.</span>
+              <span class="tr">Lorem ipsum dolor sit amet. Kontroll&#252; ortamlarda &#246;&#287;renme g&#246;revleri s&#305;ras&#305;nda EEG ve g&#246;z izleme ile kognitif y&#252;k&#252;n &#246;l&#231;&#252;lmesi.</span>
+            </div>
+          </div>
+          <div class="study-meta">
+            <span class="badge badge-active"><span class="en">Active</span><span class="tr">Devam Ediyor</span></span>
+          </div>
+        </div>
+
+        <div class="study-item">
+          <div>
+            <div class="study-type">Signal Processing</div>
+            <div class="study-title">
+              <span class="en">Wavelet-Based Biomedical Signal Analysis</span>
+              <span class="tr">Dalgac&#305;k Tabanl&#305; Biyomedikal Sinyal Analizi</span>
+            </div>
+            <div class="study-desc">
+              <span class="en">Lorem ipsum dolor sit amet. Wavelet transform methods applied to ECG and EEG signal denoising, feature extraction and classification.</span>
+              <span class="tr">Lorem ipsum dolor sit amet. EKG ve EEG sinyal analizi i&#231;in dalgac&#305;k d&#246;n&#252;&#351;&#252;m y&#246;ntemleri.</span>
+            </div>
+          </div>
+          <div class="study-meta">
+            <span class="badge badge-active"><span class="en">Active</span><span class="tr">Devam Ediyor</span></span>
+          </div>
+        </div>
+
+        <div class="study-item">
+          <div>
+            <div class="study-type">AI + Neuroscience</div>
+            <div class="study-title">
+              <span class="en">Neural Network Dynamics Simulation</span>
+              <span class="tr">N&#246;ronal A&#287; Dinamikleri Sim&#252;lasyonu</span>
+            </div>
+            <div class="study-desc">
+              <span class="en">Lorem ipsum dolor sit amet. Simulating biological neural network behavior using spiking neural models and computational tools.</span>
+              <span class="tr">Lorem ipsum dolor sit amet. Spiking n&#246;ral modeller kullanılarak biyolojik n&#246;ronal a&#287; davran&#305;&#351;lar&#305;n&#305;n sim&#252;lasyonu.</span>
+            </div>
+          </div>
+          <div class="study-meta">
+            <span class="badge badge-planned"><span class="en">Planned</span><span class="tr">Planlan&#305;yor</span></span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- NEWS -->
+  <section id="news">
+    <div class="container">
+      <div class="section-label"><span class="en">News</span><span class="tr">Haberler</span></div>
+      <h2 class="section-title"><span class="en">Latest Updates</span><span class="tr">G&#252;ncel Haberler</span></h2>
+      <p class="section-sub">
+        <span class="en">Events, publications and community highlights.</span>
+        <span class="tr">Etkinlikler, yay&#305;nlar ve topluluk haberleri.</span>
+      </p>
+      <div class="news-grid">
+
+        <div class="news-item">
+          <div class="news-date">15 June 2026</div>
+          <div class="news-category"><span class="en">Event</span><span class="tr">Etkinlik</span></div>
+          <div class="news-title">
+            <span class="en">Neuroscience Seminar: Brain-Computer Interfaces</span>
+            <span class="tr">N&#246;robilim Semineri: Beyin-Bilgisayar Aray&#252;zleri</span>
+          </div>
+          <p class="news-text">
+            <span class="en">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Open seminar on current BCI research and applications.</span>
+            <span class="tr">Lorem ipsum dolor sit amet. G&#252;ncel BCI ara&#351;t&#305;rmalar&#305; &#252;zerine a&#231;&#305;k seminer.</span>
+          </p>
+        </div>
+
+        <div class="news-item">
+          <div class="news-date">1 June 2026</div>
+          <div class="news-category"><span class="en">Research</span><span class="tr">Ara&#351;t&#305;rma</span></div>
+          <div class="news-title">
+            <span class="en">New Project: Cognitive Load Measurement</span>
+            <span class="tr">Yeni Proje: Kognitif Y&#252;k &#214;l&#231;&#252;m&#252;</span>
+          </div>
+          <p class="news-text">
+            <span class="en">Lorem ipsum dolor sit amet. Project launched combining EEG and eye-tracking methodologies.</span>
+            <span class="tr">Lorem ipsum dolor sit amet. EEG ve g&#246;z izleme y&#246;ntemlerini birle&#351;tiren proje ba&#351;lat&#305;ld&#305;.</span>
+          </p>
+        </div>
+
+        <div class="news-item">
+          <div class="news-date">20 May 2026</div>
+          <div class="news-category"><span class="en">Publication</span><span class="tr">Yay&#305;n</span></div>
+          <div class="news-title">
+            <span class="en">Nature Neuroscience Article Translation Published</span>
+            <span class="tr">Nature Neuroscience &#199;evirisi Yay&#305;nland&#305;</span>
+          </div>
+          <p class="news-text">
+            <span class="en">Lorem ipsum dolor sit amet. Turkish translation of a key neuroplasticity review now available.</span>
+            <span class="tr">Lorem ipsum dolor sit amet. N&#246;roplastisite derlemenin T&#252;rk&#231;e &#231;evirisi yay&#305;nland&#305;.</span>
+          </p>
+        </div>
+
+        <div class="news-item">
+          <div class="news-date">15 March 2026</div>
+          <div class="news-category"><span class="en">Achievement</span><span class="tr">Ba&#351;ar&#305;</span></div>
+          <div class="news-title">
+            <span class="en">BCI Project Receives TUBITAK Student Grant</span>
+            <span class="tr">BCI Projesi T&#220;B&#304;TAK 2209-A Deste&#287;i Ald&#305;</span>
+          </div>
+          <p class="news-text">
+            <span class="en">Lorem ipsum dolor sit amet. EEG motor imagery classification project awarded national student research support.</span>
+            <span class="tr">Lorem ipsum dolor sit amet. EEG projesi ulusal &#246;&#287;renci ara&#351;t&#305;rma deste&#287;i ald&#305;.</span>
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="container">
+      <div class="section-label"><span class="en">Contact</span><span class="tr">&#304;leti&#351;im</span></div>
+      <h2 class="section-title"><span class="en">Get in Touch</span><span class="tr">Bizimle &#304;leti&#351;ime Ge&#231;</span></h2>
+      <div class="contact-layout">
+        <div class="contact-info-block">
+          <h3><span class="en">Contact Information</span><span class="tr">&#304;leti&#351;im Bilgileri</span></h3>
+          <p>
+            <span class="en">Lorem ipsum dolor sit amet. Questions, ideas or collaboration proposals are welcome. We respond within 48 hours.</span>
+            <span class="tr">Lorem ipsum dolor sit amet. Sorular, fikirler veya i&#351;birli&#287;i &#246;nerileri memnuniyetle kar&#351;&#305;lan&#305;r. 48 saat i&#231;inde yan&#305;t verilir.</span>
+          </p>
+          <div class="contact-detail">
+            <span class="contact-detail-label">Email</span>
+            <span class="contact-detail-val"><a href="mailto:info@noral.com">info@noral.com</a></span>
+          </div>
+          <div class="contact-detail">
+            <span class="contact-detail-label"><span class="en">Location</span><span class="tr">Konum</span></span>
+            <span class="contact-detail-val">
+              <span class="en">Ege University, Izmir, Turkey</span>
+              <span class="tr">Ege &#220;niversitesi, &#304;zmir, T&#252;rkiye</span>
+            </span>
+          </div>
+          <div class="socials">
+            <a href="#" class="social-chip">Instagram</a>
+            <a href="#" class="social-chip">LinkedIn</a>
+            <a href="#" class="social-chip">Telegram</a>
+          </div>
+        </div>
+        <div class="form-box">
+          <div class="success-msg" id="contact-success">
+            <span class="en">Message received. We will get back to you shortly.</span>
+            <span class="tr">Mesaj&#305;n&#305;z al&#305;nd&#305;. En k&#305;sa s&#252;rede d&#246;n&#252;&#351; yapaca&#287;&#305;z.</span>
+          </div>
+          <form id="contact-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label><span class="en">Name</span><span class="tr">Ad Soyad</span></label>
+                <input type="text" required placeholder="Lorem Ipsum">
+              </div>
+              <div class="form-group">
+                <label>Email</label>
+                <input type="email" required placeholder="lorem@ipsum.com">
+              </div>
+            </div>
+            <div class="form-group">
+              <label><span class="en">Subject</span><span class="tr">Konu</span></label>
+              <select required>
+                <option value="" disabled selected></option>
+                <option><span class="en">General Question</span><span class="tr">Genel Soru</span></option>
+                <option><span class="en">Collaboration</span><span class="tr">&#304;&#351;birli&#287;i</span></option>
+                <option><span class="en">Membership</span><span class="tr">&#220;yelik</span></option>
+                <option><span class="en">Other</span><span class="tr">Di&#287;er</span></option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label><span class="en">Message</span><span class="tr">Mesaj</span></label>
+              <textarea required placeholder="Lorem ipsum dolor sit amet..."></textarea>
+            </div>
+            <div class="checkbox-row">
+              <input type="checkbox" id="kvkk" required>
+              <label for="kvkk">
+                <span class="en">I accept the <a href="#">Privacy Policy</a> (KVKK).</span>
+                <span class="tr"><a href="#">Gizlilik Politikas&#305;</a>'n&#305; (KVKK) kabul ediyorum.</span>
+              </label>
+            </div>
+            <button type="submit" class="btn-submit">
+              <span class="en">Send Message</span>
+              <span class="tr">G&#246;nder</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="footer-left">
+    <img src="images/logo.jpg" alt="NöraL">
+    NöraL
+  </div>
+  <div class="footer-right">
+    &copy; 2026 NöraL &mdash;
+    <span class="en">Neuroscience Community</span>
+    <span class="tr">N&#246;robilim Toplulu&#287;u</span>
+  </div>
+</footer>
+
+<script>
+// Language toggle
+(function () {
+  const saved = localStorage.getItem('mw-lang') || 'en';
+  document.body.classList.add('lang-' + saved);
+  const btn = document.getElementById('lang-toggle');
+  if (btn) {
+    btn.textContent = saved === 'en' ? 'TR' : 'EN';
+    btn.addEventListener('click', () => {
+      const isEn = document.body.classList.contains('lang-en');
+      document.body.classList.toggle('lang-en', !isEn);
+      document.body.classList.toggle('lang-tr', isEn);
+      const next = isEn ? 'tr' : 'en';
+      localStorage.setItem('mw-lang', next);
+      btn.textContent = next === 'en' ? 'TR' : 'EN';
+    });
+  }
+})();
+
+// Active nav on scroll
+const sectionIds = ['home','people','studies','news','contact'];
+const navBtns = document.querySelectorAll('.nav-btn');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navBtns.forEach(b => b.classList.remove('active'));
+      const active = document.querySelector('.nav-btn[href="#' + e.target.id + '"]');
+      if (active) active.classList.add('active');
+    }
+  });
+}, { threshold: 0.4 });
+sectionIds.forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el); });
+
+// Hamburger (mobile)
+const hamburger = document.getElementById('hamburger');
+const navRight = document.getElementById('nav-right');
+if (hamburger) {
+  hamburger.addEventListener('click', () => navRight.classList.toggle('open'));
+}
+
+// Contact form
+const form = document.getElementById('contact-form');
+const successMsg = document.getElementById('contact-success');
+if (form) {
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    successMsg.classList.add('show');
+    form.reset();
+  });
+}
+</script>
+</body>
+</html>
